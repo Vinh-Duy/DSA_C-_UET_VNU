@@ -1,0 +1,9 @@
+test
+
+*.exe
+
+# Bỏ qua các file dữ liệu input/output của bài tập
+*.inp
+*.out
+
+.DS_Store
