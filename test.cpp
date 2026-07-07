@@ -7,6 +7,22 @@ long long n,k;
 
 long long a[25];
 
+bool Try(int i, long long sum){
+    if (i == n-1){
+        if (sum == k){
+            return true;
+        }
+        return false;
+    }
+    if (sum > k){
+        return false;
+    }
+    // Chon phan tu a[i+1]
+    // Try(i + 1,sum + a[i+1]);
+    // Try(i + 1,sum);
+    return Try(i + 1,sum + a[i+1]) | Try(i + 1,sum);
+}
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
@@ -21,18 +37,17 @@ int main(){
     //     cout << a[i] << endl;
     // }
 
-    for (int i = 0; i < (1<<n);i++){
-        long long sum = 0;
-        for(int j = n-1; j >=0;j--){
-            if ((i>>j)&1){
-                sum += a[j];
-            } 
-        }
-        if (sum == k){
-            cout << "YES";
-            return 0;
-        }
+    // Try(1,0);
+    // Try(1,a[1]);
+
+    bool result = Try(0,0) | Try(0,a[0]);
+
+    if (result == true){
+        cout << "YES";
     }
-    cout << "NO";
+    else{
+        cout << "NO";
+    }
+
     return 0;
 }
