@@ -39,7 +39,7 @@ using namespace std;
 
 int n,k;
 
-set<set<int> > a;
+set<vector<int> > a;
 
 int main(){
     ios_base::sync_with_stdio(false);
@@ -48,21 +48,39 @@ int main(){
     // input
     cin >> n >> k;
     // __builtin_popcount(n) la so bit 1 trong bieu dien nhi phan cua n
-    
+    // next_permutation(s) liet ke hoan vi tiep theo cua tap s
     for (int i = 0; i < (1<<n);i++){
         if (__builtin_popcount(i) == k){
-            set<int> b;
+            vector<int> b;
             for (int j =0; j < n;j++){
                 if ((i>>j)&1){
-                    b.insert(j+1);
+                    b.push_back(j+1);
                 }
             }
-            a.insert(b);
+            do
+            {
+                a.insert(b);
+            } while (next_permutation(b.begin(),b.end()));
         }
     }
 
-    for (set<set<int> >::iterator c=a.begin();c!=a.end();c++){
-        for (set<int>::iterator x=(*c).begin();x!=(*c).end();x++){
+    // vector<int> s;
+    // s.push_back(1);
+    // s.push_back(2);
+    // s.push_back(3);
+    // s.push_back(4);
+    // In ra tat ca hoan vi cua mang s
+    // do
+    // {
+    //     for (vector<int>::iterator d=s.begin();d!=s.end();d++){
+    //         cout << *d << " ";
+    //     }
+    //     cout << endl;
+    // } while (next_permutation(s.begin(),s.end()));
+    
+
+    for (set<vector<int> >::iterator c=a.begin();c!=a.end();c++){
+        for (vector<int>::const_iterator x=(*c).begin();x!=(*c).end();x++){
             cout << *x << " ";
         }
         cout << endl;
