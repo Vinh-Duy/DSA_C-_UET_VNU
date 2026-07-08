@@ -2,33 +2,26 @@
 
 using namespace std;
 
-int n,k;
+int n,k,target;
 vector<int> A;
-int target;
-int dp[1<<10];
-int parent[1<<10];
-int group[10];
+vector<int> group;
+vector<int> ans;
 
-bool solve() {
-    int total = (1<<n) -1;
-    fill(dp, dp + (1<<n) ,-1);
-    dp[0] = 0;
-    for (int i =0 ;i < (1<<n); ++i){
-        if (dp[i] == -1) continue;
-        for (int j = 0; j<n;j++){
-            if(!(i & (1 << j))){
-                int next = i | (1<<j);
-                if (dp[i] + A[j] <= target){
-                    int sumn = (dp[i] + A[j] == target) ? 0 : dp[i] + A[j];
-                    if (dp[next] == -1){
-                        dp[next] = sumn;
-                        parent[next] = i;
-                    }
-                }
-            }
-        }
+bool backtrack(int idx){
+    if (idx == n){
+        return true;
     }
-    return dp[total] ==0;
+
+    for (int j = 0; j<k; j++){
+        if(group[j] + A[idx] <=target){
+            group[j] += A[idx];
+            ans[idx] = j+1;
+            if (backtrack(idx+1)) return true;
+            group[j] -= A[idx];
+        }
+    if (group[j]==0) break;
+    }
+    return false;
 }
 
 int main(){
@@ -37,49 +30,31 @@ int main(){
     cout.tie(0);
     // input
     cin >> n >> k ;
-
     A.resize(n);
+    ans.resize(n);
+    group.assign(k,0);
+
     int sum = 0;
-    for (int i =0; i<n; i++){
+    for (int i = 0; i < n; i++) {
         cin >> A[i];
         sum += A[i];
     }
 
-    if (sum % k != 0){
+    if (sum % k != 0) {
         cout << "ze\n";
         return 0;
     }
 
-    target = sum/k;
+    target = sum / k;
 
-    if (!solve()){
-        cout << "ze\n";
-        return 0;
-    }
-
-    int curmask = (1<<n) -1;
-    int curgroup = k;
-    int cursum = 0;
-
-    while (curmask > 0){
-        int premask = parent[curmask];
-        int diff = curmask ^ premask;
-        int idx = __builtin_ctz(diff);
-
-        group[idx] = curgroup;
-        cursum += A[idx];
-
-        if (cursum ==target){
-            curgroup --;
-            cursum = 0;
+    if (backtrack(0)) {
+        for (int i = 0; i < n; i++) {
+            cout << ans[i] << (i == n - 1 ? "" : " ");
         }
-        curmask = premask;
+        cout << "\n";
+    } else {
+        cout << "ze\n";
     }
 
-    for (int i =0; i<n;++i){
-        cout << group[i] << (i ==n-1 ? "" :" ");
-    }
-    cout << "\n";
-    
     return 0;
 }
