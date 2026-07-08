@@ -33,58 +33,27 @@
 #include <string>
 #include <iostream>
 #include <istream>
+#include <iomanip>
 #include <ostream>
 
 using namespace std;
 
-int n,k;
-
-set<vector<int> > a;
+double a;
 
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     cout.tie(0);
     // input
-    cin >> n >> k;
-    // __builtin_popcount(n) la so bit 1 trong bieu dien nhi phan cua n
-    // next_permutation(s) liet ke hoan vi tiep theo cua tap s
-    for (int i = 0; i < (1<<n);i++){
-        if (__builtin_popcount(i) == k){
-            vector<int> b;
-            for (int j =0; j < n;j++){
-                if ((i>>j)&1){
-                    b.push_back(j+1);
-                }
-            }
-            do
-            {
-                a.insert(b);
-            } while (next_permutation(b.begin(),b.end()));
-        }
-    }
+    cin >> a ;
 
-    // vector<int> s;
-    // s.push_back(1);
-    // s.push_back(2);
-    // s.push_back(3);
-    // s.push_back(4);
-    // In ra tat ca hoan vi cua mang s
-    // do
-    // {
-    //     for (vector<int>::iterator d=s.begin();d!=s.end();d++){
-    //         cout << *d << " ";
-    //     }
-    //     cout << endl;
-    // } while (next_permutation(s.begin(),s.end()));
+    double c = a*2*3.14;
+
+    double s = a*a*3.14;
     
+    cout << fixed << setprecision(3) << c << " ";
 
-    for (set<vector<int> >::iterator c=a.begin();c!=a.end();c++){
-        for (vector<int>::const_iterator x=(*c).begin();x!=(*c).end();x++){
-            cout << *x << " ";
-        }
-        cout << endl;
-    }
+    cout << fixed << setprecision(3) << s;
 
     return 0;
 }
